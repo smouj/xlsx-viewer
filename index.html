@@ -84,7 +84,7 @@
   .inspect{display:flex; align-items:center; justify-content:flex-start; text-align:left; gap:12px; padding:7px 14px; background:var(--panel); border-top:1px solid var(--line); flex:0 0 auto; min-height:42px}
   .inspect .addr{color:var(--accent); font:700 12px ui-monospace,SFMono-Regular,Consolas,monospace; min-width:54px}
   .inspect .val{flex:1; min-width:0; color:var(--text); text-align:left; font:12px ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre; overflow:auto; scrollbar-width:thin}
-  .inspect .val.empty{color:var(--dim); font-style:italic; font-family:inherit}
+  .inspect .val.placeholder{color:var(--dim); font-style:italic; font-family:inherit}
   .inspect .btn{padding:5px 10px; font-size:12px}
   .formula{color:#9fd3ff; font-style:italic}
   .busy{position:fixed; inset:0; z-index:70; display:none; place-items:center; background:rgba(8,11,16,.78); backdrop-filter:blur(2px)}
@@ -182,7 +182,7 @@
     </div>
     <div class="inspect" id="inspect">
       <span class="addr" id="cellAddr">—</span>
-      <span class="val empty" id="cellVal">Haz clic en una celda para ver su contenido completo</span>
+      <span class="val placeholder" id="cellVal">Haz clic en una celda para ver su contenido completo</span>
       <button class="btn ghost" id="copyCell" disabled>Copiar</button>
     </div>
   </section>
@@ -230,7 +230,7 @@
     $('cellAddr').textContent = addr || '—';
     const out = $('cellVal');
     out.textContent = placeholder ? 'Haz clic en una celda para ver su contenido completo' : (value || '(celda vacía)');
-    out.classList.toggle('empty', !!placeholder || !value);
+    out.classList.toggle('placeholder', !!placeholder || !value);
     out.title = value || '';
     $('copyCell').disabled = !value;
   }
