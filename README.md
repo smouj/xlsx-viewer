@@ -19,7 +19,13 @@ Visor de hojas de cálculo **.xlsx**, **.xlsm**, **.xls** y **.csv** que se ejec
 
 - **Ventana de app**: se abre sin pestañas ni barra de direcciones, con icono y acceso directo.
 - **Todas las hojas** del libro, con pestañas y búsqueda por fila.
-- **Todas las filas y columnas** del rango usado; la tabla virtualiza el dibujado para responder con archivos grandes.
+- **Todas las filas y columnas visibles** del rango usado; la tabla virtualiza el dibujado para responder con archivos grandes.
+- **Vista de hoja clara y legible**, con anchos y alturas guardados en el libro, y filas y columnas ocultas respetadas.
+- **Formato visual XLSX/XLSM**: rellenos, colores de texto, negrita, cursiva, tamaño de fuente, alineación, bordes y ajuste de texto de celda.
+- **Imágenes, gráficos y cuadros de texto** incrustados en `.xlsx` y `.xlsm`, colocados sobre la hoja según su ancla en el libro; clic para ampliar.
+- **Gráficos reconstruidos localmente** como SVG, con sus categorías y series guardadas o leídas desde el rango de celdas de origen.
+- **Control para ocultar los objetos visuales** y despejar la hoja mientras se leen los datos.
+- **Ajustar columnas** al contenido o restaurar sus anchos originales; activar el ajuste de texto para leer celdas largas.
 - **Inspector de celda**: clic en cualquier celda para ver el contenido completo y copiarlo.
 - **Fórmulas sin valor en caché** se muestran como fórmula en azul, sin dejar la celda vacía.
 - **Exportar CSV** de la hoja activa, con UTF-8 y BOM para Excel.
@@ -65,6 +71,11 @@ El archivo se lee con `FileReader` y se procesa en memoria dentro del navegador.
 
 - Se carga el rango usado completo de cada hoja, sin recortes artificiales de filas ni columnas.
 - Las celdas muestran el valor formateado que guardó Excel; el inspector permite ver y copiar el contenido íntegro.
+- Se respetan las dimensiones y el estado oculto de filas y columnas. El ajuste de texto muestra hasta dos líneas en la cuadrícula; el inspector conserva el texto completo.
+- Se recuperan estilos de celda habituales, imágenes PNG/JPEG/GIF/BMP/WebP/SVG, cuadros de texto y gráficos de columnas, barras, líneas, áreas, circular y anillo.
+- Los gráficos se vuelven a dibujar para que puedan leerse en el visor; no se conserva exactamente la paleta, tipografía, ejes ni disposición de Excel. Dispersión, radar, burbuja y área se muestran como líneas; los gráficos combinados se muestran según su primer tipo. Se utilizan las cachés del gráfico o los datos de las celdas de origen.
+- Para controlar el uso de memoria, la lectura de estilos y objetos OOXML se aplica a libros XLSX/XLSM de hasta 64 MB. En archivos mayores se carga la cuadrícula y los valores, pero se omite la extracción completa de estilos, imágenes y gráficos.
+- El formato condicional, tablas dinámicas, segmentadores, SmartArt, objetos OLE y gráficos 3D no se reproducen. Si un objeto incrustado no se puede mostrar, se indica en su posición con una tarjeta informativa.
 - Las fórmulas muestran su último valor calculado. Si el archivo no trae valor en caché, se muestra la fórmula.
 - Las celdas combinadas conservan el valor en su celda superior izquierda, igual que Excel.
 
@@ -77,6 +88,7 @@ El archivo se lee con `FileReader` y se procesa en memoria dentro del navegador.
 ```
 xlsx-viewer/
 ├─ index.html                 # interfaz y lógica del visor
+├─ visuals.js                 # lectura de objetos OOXML y previsualización de gráficos
 ├─ launcher.vbs               # ventana de app con Chrome o Edge
 ├─ app.ico                    # icono del acceso directo
 ├─ vendor/
@@ -91,7 +103,7 @@ xlsx-viewer/
 
 ## Desarrollo
 
-No hay build ni gestor de paquetes: es HTML, CSS y JavaScript sin frameworks. La única dependencia es SheetJS, incluida en `vendor/`.
+No hay build ni gestor de paquetes: es HTML, CSS y JavaScript sin frameworks. SheetJS está incluido en `vendor/`; el lector de imágenes y gráficos forma parte de `visuals.js` y no requiere servicios externos. Pulsa **Ver ejemplo** para ver el gráfico de muestra.
 
 Para probar cambios, abre `index.html` y usa **Ver ejemplo**. La app incluye una hoja de demostración con dos pestañas.
 
