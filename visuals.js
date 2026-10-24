@@ -1,4 +1,4 @@
-/* Local-only OOXML drawing reader and SVG chart renderer for Visor XLSX. */
+/* Local-only OOXML drawing reader and SVG chart renderer for Voryda Sheet. */
 (() => {
   'use strict';
   const REL_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';

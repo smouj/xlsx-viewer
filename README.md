@@ -1,126 +1,126 @@
-# Visor XLSX
+<p align="center">
+  <img src="assets/logo.png" alt="Voryda Sheet app icon" width="180">
+</p>
 
-**Abre Excel en Windows como una app. Rápido, local y sin subir nada.**
+<h1 align="center">Voryda Sheet</h1>
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-b8f34a)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-4c8bf5)](https://github.com/smouj/xlsx-viewer/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Web-555)](#instalación)
-[![Local-first](https://img.shields.io/badge/privacy-100%25%20local-b8f34a)](#privacidad)
-[![SheetJS](https://img.shields.io/badge/SheetJS-0.20.3-ea6a1a)](https://sheetjs.com/)
-[![Demo](https://img.shields.io/badge/demo-online-b8f34a)](https://smouj.github.io/xlsx-viewer/)
+<p align="center">
+  <strong>Open Excel workbooks locally in your browser or in a lightweight Windows app window.</strong>
+</p>
 
-**Demo web:** https://smouj.github.io/xlsx-viewer/
+<p align="center">
+  <a href="README.es.md">Español</a>
+</p>
 
-![Visor XLSX con una hoja abierta](docs/screenshot.png)
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Browser-0078D4?style=flat-square" alt="Windows and browser">
+  <img src="https://img.shields.io/badge/formats-XLSX%20%7C%20XLSM%20%7C%20XLS%20%7C%20CSV-217346?style=flat-square" alt="XLSX, XLSM, XLS and CSV">
+  <img src="https://img.shields.io/badge/runtime-HTML%20%2B%20CSS%20%2B%20JavaScript-E34F26?style=flat-square" alt="HTML, CSS and JavaScript">
+  <img src="https://img.shields.io/badge/processing-local%20only-2EA44F?style=flat-square" alt="Files are processed locally">
+  <img src="https://img.shields.io/badge/SheetJS-CE%200.20.3-217346?style=flat-square" alt="SheetJS Community Edition 0.20.3">
+  <a href="https://github.com/smouj/xlsx-viewer/releases/latest"><img src="https://img.shields.io/github/v/release/smouj/xlsx-viewer?style=flat-square" alt="Latest GitHub release"></a>
+  <a href="https://smouj.github.io/xlsx-viewer/"><img src="https://img.shields.io/badge/demo-online-2EA44F?style=flat-square" alt="Online demo"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2EA44F?style=flat-square" alt="MIT License"></a>
+</p>
 
-Visor de hojas de cálculo **.xlsx**, **.xlsm**, **.xls** y **.csv** que se ejecuta en tu equipo. Sin servidor, sin cuenta, sin telemetría y sin subir el archivo a ninguna parte.
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#project-status">Status</a> ·
+  <a href="#build-from-source">Build</a> ·
+  <a href="#privacy">Privacy</a>
+</p>
 
-## Características
+## Overview
 
-- **Ventana de app**: se abre sin pestañas ni barra de direcciones, con icono y acceso directo.
-- **Todas las hojas** del libro, con pestañas y búsqueda por fila.
-- **Todas las filas y columnas visibles** del rango usado; la tabla virtualiza el dibujado para responder con archivos grandes.
-- **Vista de hoja clara y legible**, con anchos y alturas guardados en el libro, y filas y columnas ocultas respetadas.
-- **Formato visual XLSX/XLSM**: rellenos, colores de texto, negrita, cursiva, tamaño de fuente, alineación, bordes y ajuste de texto de celda.
-- **Imágenes, gráficos y cuadros de texto** incrustados en `.xlsx` y `.xlsm`, colocados sobre la hoja según su ancla en el libro; clic para ampliar.
-- **Imágenes insertadas dentro de una celda**: se muestran en su celda, con texto alternativo y vista ampliada al pulsarlas.
-- **Gráficos reconstruidos localmente** como SVG, con sus categorías y series guardadas o leídas desde el rango de celdas de origen.
-- **Control para ocultar los objetos visuales** y despejar la hoja mientras se leen los datos.
-- **Ajustar columnas** al contenido o restaurar sus anchos originales; activar el ajuste de texto para leer celdas largas.
-- **Zoom de hoja del 50 % al 200 %**, con controles y atajos `Ctrl` + `+` / `Ctrl` + `-`; el desplazamiento conserva su posición.
-- **Inspector de celda**: clic en cualquier celda para ver el contenido completo y copiarlo.
-- **Fórmulas sin valor en caché** se muestran como fórmula en azul, sin dejar la celda vacía.
-- **Exportar CSV** de la hoja activa, con UTF-8 y BOM para Excel.
-- **100 % local**: funciona sin conexión y no hace peticiones de red.
-- **Cero instalación**: HTML + JavaScript y la librería incluida en el repo.
+**Voryda Sheet** is a read-only spreadsheet viewer for <code>.xlsx</code>, <code>.xlsm</code>, <code>.xls</code> and <code>.csv</code> files. It runs in the browser, with no account, server, analytics or file upload. A small Windows launcher can open it in an app-style window.
 
-## Instalación
+<p align="center">
+  <a href="https://smouj.github.io/xlsx-viewer/">Open the web demo</a> ·
+  <a href="https://github.com/smouj/xlsx-viewer/releases/latest">Download the latest release</a>
+</p>
 
-1. Descarga el ZIP desde [Releases](https://github.com/smouj/xlsx-viewer/releases).
-2. Descomprímelo en una carpeta permanente.
-3. Doble clic en **Visor XLSX** (acceso directo) o en `launcher.vbs`.
+## Features
 
-No requiere administrador, instalador ni dependencias. Si mueves la carpeta, crea un acceso directo nuevo a `launcher.vbs` con `app.ico`.
+- Open workbooks with multiple sheets and switch between them using sheet tabs.
+- Browse the used range of each sheet with virtualized row rendering for large files.
+- Search rows in the active sheet and inspect or copy a cell's full value.
+- Read common cell formatting, including fills, font colors, bold, italics, alignment, borders and text wrapping.
+- Display embedded images, text boxes and supported charts in <code>.xlsx</code> and <code>.xlsm</code> files; click an object to enlarge it.
+- Display images inserted in cells, with a larger view on click.
+- Adjust column widths, wrap cell text and zoom the sheet from 50% to 200%.
+- Export the active sheet as UTF-8 CSV with a BOM for Excel.
+- Use the bundled app without a build step or package installation.
 
-### Desde el código
+## Project status
 
-```bash
-git clone https://github.com/smouj/xlsx-viewer.git
-cd xlsx-viewer
-```
+The repository publishes **Voryda Sheet 1.0.0** as a portable ZIP. The browser demo is also available. The Windows launcher uses an installed copy of Chrome or Edge when available; opening <code>index.html</code> directly works in modern browsers.
 
-Abre `index.html` en Chrome, Edge o Firefox. Para la ventana de app en Windows, ejecuta `launcher.vbs`.
+The viewer is read-only. It does not edit or save changes to the source workbook. See [the supported behavior and limitations](#data-fidelity-and-limitations) before relying on complex Excel objects.
 
-## Uso
+## Screenshot
 
-- Arrastra el archivo a la ventana o pulsa **Abrir archivo**.
-- Cambia de hoja con las pestañas.
-- Escribe en el buscador para filtrar filas de la hoja activa.
-- Haz clic en una celda para ver su valor completo en la barra inferior.
-- Usa `−`, `+` o el porcentaje para ajustar el zoom de lectura.
-- **Exportar CSV** descarga la hoja activa.
+![Voryda Sheet displaying a spreadsheet](docs/screenshot.png)
 
-| Atajo | Acción |
-|---|---|
-| `Ctrl+O` | Abrir archivo |
-| `←` / `→` | Hoja anterior / siguiente |
-| `Esc` | Limpiar la búsqueda |
-| `Ctrl` + `+` / `Ctrl` + `-` | Aumentar / reducir zoom |
+## Requirements
 
-## Privacidad
+- A modern browser for the web app: Chrome, Edge or Firefox.
+- Windows with Chrome or Edge installed for the app-style launcher. If neither is found, the launcher opens <code>index.html</code> with the default browser.
+- No server, account, installer or administrator access is required.
 
-El archivo se lee con `FileReader` y se procesa en memoria dentro del navegador. No hay backend, analíticas, cookies ni peticiones de red. El visor no modifica ni guarda el archivo original.
+## Build from source
 
-## Fidelidad de datos
+There is no build step or package manager. SheetJS Community Edition 0.20.3 is included in <code>vendor/</code>; the workbook reader and visual-object support run locally.
 
-- Se carga el rango usado completo de cada hoja, sin recortes artificiales de filas ni columnas.
-- Las celdas muestran el valor formateado que guardó Excel; el inspector permite ver y copiar el contenido íntegro.
-- Se respetan las dimensiones y el estado oculto de filas y columnas. El ajuste de texto muestra hasta dos líneas en la cuadrícula; el inspector conserva el texto completo.
-- Se recuperan estilos de celda habituales, imágenes PNG/JPEG/GIF/BMP/WebP/SVG flotantes o insertadas dentro de celdas, cuadros de texto y gráficos de columnas, barras, líneas, áreas, circular y anillo.
-- Los anclajes de los objetos visuales usan los anchos y alturas mostrados, incluidos los tamaños guardados y las filas o columnas ocultas. Las imágenes de celda se ajustan a su celda y se pueden ampliar con un clic.
-- Los gráficos se vuelven a dibujar para que puedan leerse en el visor; no se conserva exactamente la paleta, tipografía, ejes ni disposición de Excel. Dispersión, radar, burbuja y área se muestran como líneas; los gráficos combinados se muestran según su primer tipo. Se utilizan las cachés del gráfico o los datos de las celdas de origen.
-- Para controlar el uso de memoria, la lectura de estilos y objetos OOXML se aplica a libros XLSX/XLSM de hasta 64 MB. En archivos mayores se carga la cuadrícula y los valores, pero se omite la extracción completa de estilos, imágenes y gráficos.
-- El formato condicional, tablas dinámicas, segmentadores, SmartArt, objetos OLE y gráficos 3D no se reproducen. Si un objeto incrustado no se puede mostrar, se indica en su posición con una tarjeta informativa.
-- Las fórmulas muestran su último valor calculado. Si el archivo no trae valor en caché, se muestra la fórmula.
-- Las celdas combinadas conservan el valor en su celda superior izquierda, igual que Excel.
+    git clone https://github.com/smouj/xlsx-viewer.git
+    cd xlsx-viewer
 
-## Capturas
+Open <code>index.html</code> in a modern browser. On Windows, run <code>launcher.vbs</code> to open the app-style window. Select **View example** in the app to load the bundled sample workbook.
 
-![Pantalla inicial](docs/empty.png)
+## Use the viewer
 
-## Estructura
+1. Drop a workbook into the window or choose **Open file**.
+2. Switch sheets with the tabs, or search rows in the active sheet.
+3. Click a cell to inspect and copy its full value.
+4. Use the zoom controls to change the sheet scale, or choose **Export CSV** for the active sheet.
 
-```
-xlsx-viewer/
-├─ index.html                 # interfaz y lógica del visor
-├─ visuals.js                 # lectura de objetos OOXML y previsualización de gráficos
-├─ launcher.vbs               # ventana de app con Chrome o Edge
-├─ app.ico                    # icono del acceso directo
-├─ vendor/
-│  ├─ xlsx.full.min.js        # SheetJS CE 0.20.3
-│  └─ SHEETJS_LICENSE.txt     # Apache-2.0
-├─ docs/
-│  ├─ screenshot.png
-│  └─ empty.png
-├─ LICENSE
-└─ THIRD_PARTY_NOTICES.md
-```
+| Shortcut | Action |
+| --- | --- |
+| <kbd>Ctrl</kbd>+<kbd>O</kbd> | Open a file |
+| <kbd>←</kbd> / <kbd>→</kbd> | Previous / next sheet |
+| <kbd>Esc</kbd> | Clear the search |
+| <kbd>Ctrl</kbd>+<kbd>+</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Zoom in / out |
 
-## Desarrollo
+## Local data and privacy
 
-No hay build ni gestor de paquetes: es HTML, CSS y JavaScript sin frameworks. SheetJS está incluido en `vendor/`; el lector de imágenes y gráficos forma parte de `visuals.js` y no requiere servicios externos. Pulsa **Ver ejemplo** para ver el gráfico de muestra.
+Voryda Sheet reads selected files with the browser's <code>FileReader</code> API and processes them in memory. The app has no backend, analytics, cookies, upload path or network requests. The original workbook is not modified or saved by the viewer. The online demo is hosted separately on GitHub Pages.
 
-Para probar cambios, abre `index.html` y usa **Ver ejemplo**. La app incluye una hoja de demostración con dos pestañas.
+## Data fidelity and limitations
 
-## Limitaciones
+- Each sheet's used range is loaded without an artificial row or column cutoff. Large sheets still depend on available browser memory.
+- Cell values use the formatted values stored in the workbook; the cell inspector shows the complete value. Formulas display their last cached result, or the formula itself when no cached result is present.
+- Common cell styles, row and column sizes, hidden rows and columns, and merged-cell values are supported.
+- Embedded and in-cell PNG, JPEG, GIF, BMP, WebP and SVG images, text boxes, and column, bar, line, area, pie and doughnut charts are supported. Click images or charts for an enlarged view.
+- Charts are redrawn locally. Their exact Excel palette, typography, axes and layout are not retained. Scatter, radar, bubble and area charts are rendered as lines; a combined chart follows its first chart type. Cached chart data or source-cell values are used.
+- Full style and visual-object extraction is limited to <code>.xlsx</code>/<code>.xlsm</code> files up to 64 MB. Larger books still load their grid and values, but style and object extraction is skipped.
+- Conditional formatting, pivot tables, slicers, SmartArt, OLE objects and 3D charts are not reproduced. Unsupported embedded objects are shown with an information card when possible.
+- Password-protected workbooks cannot be opened. The app is a viewer and does not edit or save workbooks.
 
-- Visor de solo lectura: no edita ni guarda cambios en el archivo.
-- Los archivos protegidos con contraseña no se pueden abrir.
-- Hojas extremadamente grandes dependen de la memoria disponible del navegador.
-- Las celdas combinadas se muestran en su celda de origen, sin repetir el valor.
+## License
 
-## Licencia
+Voryda Sheet is distributed under the [MIT License](LICENSE). SheetJS Community Edition is distributed under Apache-2.0; see [the third-party notices](THIRD_PARTY_NOTICES.md).
 
-Código del visor: [MIT](LICENSE). SheetJS Community Edition: Apache-2.0, detallado en [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+---
 
-Hecho por [SMOUJ013](https://github.com/smouj).
+<p align="center">
+  <strong>Voryda</strong><br>
+  Focused Windows utilities.
+</p>
+
+<p align="center">
+  <a href="https://github.com/smouj/voryda-snap">Snap</a> ·
+  <a href="https://github.com/smouj/voryda-rec">Rec</a> ·
+  <a href="https://github.com/smouj/voryda-down">Down</a> ·
+  <a href="https://github.com/smouj/voryda-cut">Cut</a> ·
+  <a href="https://github.com/smouj/xlsx-viewer">Sheet</a>
+</p>

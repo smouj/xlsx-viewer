@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Visor XLSX</title>
+<title>Voryda Sheet</title>
 <link rel="icon" href="app.ico">
 <style>
   :root{
@@ -185,7 +185,7 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><span class="mark"></span><span>Visor XLSX</span></div>
+  <div class="brand"><span class="mark"></span><span>Voryda Sheet</span></div>
   <div class="meta" id="meta">Local · los archivos no salen de tu equipo</div>
   <div class="actions">
     <button class="btn" id="openBtn">Abrir archivo</button>
@@ -1231,7 +1231,7 @@
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Ejemplo');
     const notes = XLSX.utils.aoa_to_sheet([
-      ['Visor XLSX'],
+      ['Voryda Sheet'],
       ['Arrastra un .xlsx, .xlsm, .xls o .csv para abrirlo.'],
       ['La búsqueda filtra filas en la hoja activa.'],
       ['Pulsa el gráfico para abrir la vista ampliada.'],
