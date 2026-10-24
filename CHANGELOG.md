@@ -11,16 +11,21 @@ Todas las versiones relevantes de Visor XLSX.
 - Ajuste de columnas al contenido y ajuste de texto de dos líneas para celdas largas.
 - Virtualización por altura real de fila para conservar el desplazamiento con filas personalizadas.
 - El lector conserva los metadatos disponibles y procesa las definiciones de estilo incluidas en el paquete XLSX/XLSM.
+- Los anclajes de imágenes y gráficos ahora respetan el zoom, las dimensiones de la hoja y las filas o columnas ocultas, también fuera del rango usado.
+- Los objetos amplían el área desplazable cuando se encuentran más allá de las celdas con datos.
 
 ### Añadido
 - Lectura local de imágenes incrustadas y cuadros de texto a partir de las relaciones OOXML del libro.
 - Gráficos de columnas, barras, líneas, áreas, circular y anillo reconstruidos en SVG; también se leen datos de los rangos de origen si el gráfico no incluye caché.
 - Los objetos visuales se colocan sobre la cuadrícula, muestran una vista ampliada al pulsarlos y se pueden ocultar para despejar la hoja.
+- Las imágenes insertadas dentro de celdas se recuperan desde los valores enriquecidos OOXML, se muestran en su celda y se amplían al pulsarlas.
+- Controles de zoom del 50 % al 200 %, con conservación de la posición de lectura y atajos de teclado.
 - Tarjetas informativas para imágenes u objetos incrustados con formato no compatible.
 
 ### Corregido
 - Liberación de las URL temporales de las imágenes al abrir otro libro o cerrar la app.
 - Los objetos visuales se ocultan durante una búsqueda para evitar que queden desalineados con las filas filtradas.
+- Las imágenes reutilizadas comparten una URL temporal y no duplican memoria durante la lectura.
 
 ## [1.0.0] — 2026-10-20
 

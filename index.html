@@ -11,6 +11,8 @@
     --text:#e8edf3; --muted:#8b96a5; --dim:#5d6877;
     --accent:#b8f34a; --accent-ink:#101408; --danger:#ff6f6f;
     --row:32px;
+    --zoom-scale:1;
+    --row-number-width:56px;
     --sheet:#ffffff; --sheet-ink:#202833; --sheet-muted:#75808d;
     --sheet-head:#f3f5f7; --sheet-line:#dfe4e8; --sheet-hover:#f1f8e8;
   }
@@ -94,32 +96,37 @@
   .busy .box{display:flex; align-items:center; gap:14px; background:var(--panel); border:1px solid var(--line); padding:16px 22px; border-radius:12px; font-size:13px}
   .spinner{width:30px; height:30px; border:3px solid #2c3645; border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  table{border-collapse:separate; border-spacing:0; table-layout:fixed; width:max-content; min-width:100%; font-size:13px; color:var(--sheet-ink)}
+  table{border-collapse:separate; border-spacing:0; table-layout:fixed; width:max-content; font-size:calc(13px * var(--zoom-scale)); color:var(--sheet-ink)}
   thead th{
-    position:sticky; top:0; z-index:2; height:36px; padding:0 10px; text-align:center;
-    background:var(--sheet-head); color:#505b67; font-size:11.5px; font-weight:650; letter-spacing:.2px;
-    border-bottom:1px solid #cfd6dd; border-right:1px solid var(--sheet-line); white-space:nowrap;
+    position:sticky; top:0; z-index:2; height:calc(36px * var(--zoom-scale)); padding:0 calc(10px * var(--zoom-scale)); text-align:center;
+    background:var(--sheet-head); color:#505b67; font-size:calc(11.5px * var(--zoom-scale)); font-weight:650; letter-spacing:.2px;
+    border-bottom:calc(1px * var(--zoom-scale)) solid #cfd6dd; border-right:calc(1px * var(--zoom-scale)) solid var(--sheet-line); white-space:nowrap;
   }
   tbody td{
-    height:var(--row); padding:0 10px; line-height:normal;
-    border-bottom:1px solid var(--sheet-line); border-right:1px solid var(--sheet-line);
+    height:var(--row); padding:0 calc(10px * var(--zoom-scale)); line-height:normal;
+    border-bottom:calc(1px * var(--zoom-scale)) solid var(--sheet-line); border-right:calc(1px * var(--zoom-scale)) solid var(--sheet-line);
     overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle; background:var(--sheet);
   }
   tbody tr:hover td{background:var(--sheet-hover)}
   td.num{text-align:right; font-variant-numeric:tabular-nums}
   td.rownum,th.rownum{
-    position:sticky; left:0; width:56px; min-width:56px; max-width:56px; text-align:right;
-    padding:0 9px 0 4px; color:#7c8793; background:#f4f6f8; font-size:11px;
-    font-variant-numeric:tabular-nums; border-right:1px solid #cfd6dd; z-index:1;
+    position:sticky; left:0; width:var(--row-number-width); min-width:var(--row-number-width); max-width:var(--row-number-width); text-align:right;
+    padding:0 calc(9px * var(--zoom-scale)) 0 calc(4px * var(--zoom-scale)); color:#7c8793; background:#f4f6f8; font-size:calc(11px * var(--zoom-scale));
+    font-variant-numeric:tabular-nums; border-right:calc(1px * var(--zoom-scale)) solid #cfd6dd; z-index:1;
   }
   th.rownum{z-index:3; background:#e9edf1; color:#65717e}
   tbody tr:hover td.rownum{background:#e8f1dc}
+  td.cell-with-image{position:relative;padding:0!important;background:#fff!important}
+  td.cell-with-image .cell-image{position:absolute;inset:calc(2px * var(--zoom-scale));width:calc(100% - 4px * var(--zoom-scale));height:calc(100% - 4px * var(--zoom-scale));object-fit:contain;background:#fff;cursor:zoom-in}
+  td.cell-with-image.selected .cell-image{inset:calc(3px * var(--zoom-scale));width:calc(100% - 6px * var(--zoom-scale));height:calc(100% - 6px * var(--zoom-scale))}
+  td.cell-with-image .cell-image-fallback{position:absolute;inset:2px;display:grid;place-items:center;padding:4px;color:#697583;background:#f4f6f8;font-size:11px;text-align:center;cursor:zoom-in}
+  .cell-image:focus-visible,.cell-image-fallback:focus-visible{outline:2px solid #70a92a;outline-offset:-2px}
   td.selected{position:relative; z-index:1; outline:2px solid #70a92a; outline-offset:-2px; background:#f7ffed!important}
   td.rownum.selected-row{background:#e5f0d7; color:#3d6416; font-weight:700}
   .cell-text{display:block; overflow:hidden; text-overflow:ellipsis; white-space:inherit}
-  .wrap-text tbody td{white-space:normal; line-height:1.25; padding-top:5px; padding-bottom:5px}
+  .wrap-text tbody td{white-space:normal; line-height:1.25; padding-top:calc(5px * var(--zoom-scale)); padding-bottom:calc(5px * var(--zoom-scale))}
   .wrap-text .cell-text{display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; white-space:normal; overflow-wrap:anywhere}
-  tbody td.excel-wrap{white-space:normal; line-height:1.25; padding-top:5px; padding-bottom:5px}
+  tbody td.excel-wrap{white-space:normal; line-height:1.25; padding-top:calc(5px * var(--zoom-scale)); padding-bottom:calc(5px * var(--zoom-scale))}
   tbody td.excel-wrap .cell-text{display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; white-space:normal; overflow-wrap:anywhere}
   .visual-layer{position:absolute;left:0;top:0;z-index:4;pointer-events:none}
   .visual-object{position:absolute;display:block;overflow:hidden;pointer-events:auto;border:1px solid #c8d0d8;border-radius:5px;background:#fff;box-shadow:0 3px 10px rgba(22,34,46,.22);cursor:zoom-in}
@@ -140,6 +147,10 @@
   .visual-dialog-body .unsupported{max-width:500px;text-align:center;color:#aab4c0;line-height:1.6}
   .toolbar .btn{padding:7px 10px; white-space:nowrap}
   .toolbar .btn[aria-pressed="true"]{border-color:#718b4a; color:#d8f6a4; background:#202b1b}
+  .zoom-controls{display:flex;align-items:center;gap:3px;flex:0 0 auto;padding:2px;border:1px solid var(--line);border-radius:9px;background:#0d1219}
+  .zoom-controls .btn{min-width:34px;padding:5px 8px;border:0;background:transparent}
+  .zoom-controls .zoom-value{min-width:48px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .zoom-controls .btn:hover:not(:disabled){background:#1d2531}
   tr.spacer td{padding:0!important; border:0!important; line-height:0!important; background:transparent!important}
   .emptycell{color:var(--sheet-muted); text-align:center; padding:30px!important; line-height:1.6!important}
   mark{background:var(--accent); color:var(--accent-ink); border-radius:2px; padding:0 1px}
@@ -167,6 +178,7 @@
     .toolbar{gap:6px; flex-wrap:wrap}
     .toolbar .search{max-width:none; flex-basis:100%}
     .toolbar .btn{font-size:12px; padding:6px 8px}
+    .zoom-controls .btn{font-size:12px;padding:5px 7px}
     .stats{margin-left:auto; max-width:100%}
   }
 </style>
@@ -206,6 +218,11 @@
       <button class="btn ghost" id="wrapBtn" type="button" aria-pressed="false" title="Mostrar hasta dos líneas por celda">Ajustar texto</button>
       <button class="btn ghost" id="fitBtn" type="button" title="Usar los anchos estimados según el contenido">Ajustar columnas</button>
       <button class="btn ghost" id="visualBtn" type="button" aria-pressed="true" hidden>Visuales</button>
+      <div class="zoom-controls" role="group" aria-label="Zoom de la hoja">
+        <button class="btn" id="zoomOut" type="button" aria-label="Reducir zoom" title="Reducir zoom">−</button>
+        <button class="btn zoom-value" id="zoomReset" type="button" title="Restablecer zoom">100%</button>
+        <button class="btn" id="zoomIn" type="button" aria-label="Aumentar zoom" title="Aumentar zoom">+</button>
+      </div>
       <div class="stats" id="stats"></div>
     </div>
     <div class="gridwrap" id="gridwrap">
@@ -252,9 +269,9 @@
     formulas: new Map(), cellValue: '',
     filtered: null, query: '', searchText: null,
     widths: [], visibleCols: [], rowHeights: [], viewRows: [], visibleRows: [], viewOffsets: [0],
-    useExcelWidths: true, wrapText: false, selectedAddr: '', selectedRow: null,
+    useExcelWidths: true, wrapText: false, zoom:100, selectedAddr: '', selectedRow: null,
     cellStylesBySheet: new Map(), cellStyles: new Map(),
-    visualsBySheet: new Map(), visuals: [], visualUrls: [], showVisuals: true,
+    visualsBySheet: new Map(), visuals: [], cellImagesBySheet:new Map(), cellImages:new Map(), visualUrls:[], showVisuals: true,
     renderedStart: -1, renderedCount: 0, scrollRaf: false
   };
 
@@ -516,7 +533,7 @@
 
   function rowHeight(index) {
     const height = state.rowHeights[index] || ROW_H;
-    return state.wrapText ? Math.max(height, WRAP_ROW_H) : height;
+    return (state.wrapText ? Math.max(height, WRAP_ROW_H) : height) * (state.zoom / 100);
   }
 
   function rebuildVisibleRows() {
@@ -601,7 +618,7 @@
     for (const c of state.visibleCols) {
       const th = document.createElement('th');
       th.textContent = colName(state.colStart + c);
-      th.style.width = state.widths[c] + 'px';
+      th.style.width = (state.widths[c] * state.zoom / 100) + 'px';
       th.title = 'Columna ' + colName(state.colStart + c);
       tr.appendChild(th);
     }
@@ -609,11 +626,11 @@
 
     const cols = document.createDocumentFragment();
     const first = document.createElement('col');
-    first.style.width = '56px';
+    first.style.width = (ROW_NUMBER_W * state.zoom / 100) + 'px';
     cols.appendChild(first);
     for (const c of state.visibleCols) {
       const col = document.createElement('col');
-      col.style.width = state.widths[c] + 'px';
+      col.style.width = (state.widths[c] * state.zoom / 100) + 'px';
       cols.appendChild(col);
     }
     $('cols').replaceChildren(cols);
@@ -623,7 +640,8 @@
     const parts = [];
     parts.push(fmt.format(state.viewRows.length) + ' filas × ' + fmt.format(state.visibleCols.length) + ' columnas');
     parts.push('Hoja ' + (state.active + 1) + '/' + state.wb.SheetNames.length);
-    if (state.visuals.length) parts.push(fmt.format(state.visuals.length) + (state.visuals.length === 1 ? ' objeto visual' : ' objetos visuales'));
+    const visualCount = state.visuals.length + state.cellImages.size;
+    if (visualCount) parts.push(fmt.format(visualCount) + (visualCount === 1 ? ' objeto visual' : ' objetos visuales'));
     if (state.query) parts.push(fmt.format(state.filtered ? state.filtered.length : 0) + ' coincidencias');
     $('stats').textContent = parts.join(' · ');
   }
@@ -658,9 +676,32 @@
       const cellObject = state.ws[XLSX.utils.encode_cell({ r: state.rowStart + index, c: state.colStart + c })];
       applyCellStyle(td, state.cellStyles.get(absolute) || cssFromCellObject(cellObject && cellObject.s, state.wb));
       if (display.length > 80) td.title = display.slice(0, 600) + (display.length > 600 ? '…' : '');
-      td.innerHTML = '<span class="cell-text">' + (formula && !raw
-        ? '<span class="formula">' + esc(display) + '</span>'
-        : highlight(display)) + '</span>';
+      const cellImage = state.cellImages.get(absolute);
+      if (cellImage && state.showVisuals) {
+        td.classList.add('cell-with-image');
+        td.title = cellImage.message || cellImage.alt || cellImage.name;
+        const image = document.createElement(cellImage.kind === 'image' ? 'img' : 'span');
+        image.className = cellImage.kind === 'image' ? 'cell-image' : 'cell-image-fallback';
+        if (cellImage.kind === 'image') {
+          image.src = cellImage.src;
+          image.alt = cellImage.alt || cellImage.name || 'Imagen en la celda';
+        } else image.textContent = 'Imagen no compatible';
+        image.tabIndex = 0;
+        image.setAttribute('role', 'button');
+        image.setAttribute('aria-label', (cellImage.alt || cellImage.name || 'Imagen de Excel') + ' · abrir ampliada');
+        image.addEventListener('click', () => openVisual(cellImage));
+        image.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openVisual(cellImage);
+          }
+        });
+        td.appendChild(image);
+      } else {
+        td.innerHTML = '<span class="cell-text">' + (formula && !raw
+          ? '<span class="formula">' + esc(display) + '</span>'
+          : highlight(display)) + '</span>';
+      }
       if (isNumeric(raw)) td.classList.add('num');
       td.dataset.addr = colName(state.colStart + c) + (state.rowStart + index + 1);
       if (td.dataset.addr === state.selectedAddr) td.classList.add('selected');
@@ -703,38 +744,60 @@
   }
 
   function visualColumnPosition(column, offsetEmu) {
-    let x = ROW_NUMBER_W;
+    const scale = state.zoom / 100;
+    let x = ROW_NUMBER_W * scale;
     for (const index of state.visibleCols) {
       const absoluteColumn = state.colStart + index;
-      if (absoluteColumn < column) x += state.widths[index] || 96;
-      else if (absoluteColumn === column) return x + (offsetEmu || 0) / 9525;
+      if (absoluteColumn < column) x += (state.widths[index] || 76) * scale;
+      else if (absoluteColumn === column) return x + (offsetEmu || 0) / 9525 * scale;
       else return x;
     }
     const lastColumn = state.colStart + state.totalCols;
-    if (column > lastColumn) x += (column - lastColumn) * 96;
-    return x + (offsetEmu || 0) / 9525;
+    if (column > lastColumn) {
+      const metadata = state.ws && state.ws['!cols'] || [];
+      for (let current = lastColumn; current < column; current++) {
+        const columnMetadata = metadata[current] || {};
+        if (columnMetadata.hidden) continue;
+        const width = Number.isFinite(columnMetadata.wpx) && columnMetadata.wpx > 0
+          ? columnMetadata.wpx
+          : (Number.isFinite(columnMetadata.wch) && columnMetadata.wch > 0 ? columnMetadata.wch * 7 + 12 : 64);
+        x += width * scale;
+      }
+    }
+    return x + (offsetEmu || 0) / 9525 * scale;
   }
 
   function visualRowPosition(row, offsetEmu) {
-    let y = HEADER_H;
+    const scale = state.zoom / 100;
+    let y = HEADER_H * scale;
     for (const index of state.viewRows) {
       const absoluteRow = state.rowStart + index;
       if (absoluteRow < row) y += rowHeight(index);
-      else if (absoluteRow === row) return y + (offsetEmu || 0) / 9525;
+      else if (absoluteRow === row) return y + (offsetEmu || 0) / 9525 * scale;
       else return y;
     }
     const lastRow = state.rowStart + state.rows.length;
-    if (row > lastRow) y += (row - lastRow) * ROW_H;
-    return y + (offsetEmu || 0) / 9525;
+    if (row > lastRow) {
+      const metadata = state.ws && state.ws['!rows'] || [];
+      for (let current = lastRow; current < row; current++) {
+        const rowMetadata = metadata[current] || {};
+        if (rowMetadata.hidden || rowMetadata.hpx === 0 || rowMetadata.hpt === 0) continue;
+        const height = Number.isFinite(rowMetadata.hpx) ? rowMetadata.hpx
+          : (Number.isFinite(rowMetadata.hpt) ? rowMetadata.hpt * 96 / 72 : ROW_H);
+        y += height * scale;
+      }
+    }
+    return y + (offsetEmu || 0) / 9525 * scale;
   }
 
   function visualBounds(item) {
     const anchor = item.anchor || {};
-    if (anchor.absolute) return { x:ROW_NUMBER_W + anchor.x, y:HEADER_H + anchor.y, width:anchor.width, height:anchor.height };
+    const scale = state.zoom / 100;
+    if (anchor.absolute) return { x:ROW_NUMBER_W * scale + anchor.x * scale, y:HEADER_H * scale + anchor.y * scale, width:anchor.width * scale, height:anchor.height * scale };
     const from = anchor.from || { col:0, row:0, colOff:0, rowOff:0 };
     const x = visualColumnPosition(from.col, from.colOff);
     const y = visualRowPosition(from.row, from.rowOff);
-    let width = anchor.width || 0, height = anchor.height || 0;
+    let width = (anchor.width || 0) * scale, height = (anchor.height || 0) * scale;
     if (anchor.to) {
       const endX = visualColumnPosition(anchor.to.col, anchor.to.colOff);
       const endY = visualRowPosition(anchor.to.row, anchor.to.rowOff);
@@ -742,18 +805,18 @@
       if (endY > y) height = endY - y;
     }
     if (item.kind === 'chart') {
-      width = Math.max(220, width || 520);
-      height = Math.max(170, height || 320);
+      width = Math.max(220 * scale, width || 520 * scale);
+      height = Math.max(170 * scale, height || 320 * scale);
     } else if (item.kind === 'text') {
-      width = Math.max(150, width || 220);
-      height = Math.max(58, height || 90);
+      width = Math.max(150 * scale, width || 220 * scale);
+      height = Math.max(58 * scale, height || 90 * scale);
     } else {
-      width = width || 240;
-      height = height || 180;
+      width = width || 240 * scale;
+      height = height || 180 * scale;
     }
     return {
-      x:Math.max(0, x), y:Math.max(HEADER_H, y),
-      width:Math.max(40, Math.min(1600, width)), height:Math.max(36, Math.min(1200, height))
+      x:Math.max(0, x), y:Math.max(HEADER_H * scale, y),
+      width:Math.max(40 * scale, Math.min(1600 * scale, width)), height:Math.max(36 * scale, Math.min(1200 * scale, height))
     };
   }
 
@@ -761,16 +824,26 @@
     const layer = $('visualLayer');
     const button = $('visualBtn');
     const items = state.visuals || [];
+    const visualCount = items.length + state.cellImages.size;
     layer.replaceChildren();
-    button.hidden = items.length === 0;
-    button.disabled = items.length === 0;
+    button.hidden = visualCount === 0;
+    button.disabled = visualCount === 0;
     button.setAttribute('aria-pressed', state.showVisuals ? 'true' : 'false');
-    button.textContent = (state.showVisuals ? 'Ocultar visuales' : 'Mostrar visuales') + ' · ' + items.length;
+    button.textContent = (state.showVisuals ? 'Ocultar visuales' : 'Mostrar visuales') + ' · ' + visualCount;
     button.title = state.query ? 'Limpia la búsqueda para colocar los objetos en su posición original' : 'Mostrar u ocultar imágenes, gráficos y objetos incrustados';
     layer.classList.toggle('off', !state.showVisuals || !!state.query || items.length === 0);
-    if (!items.length || !state.showVisuals || state.query) return;
+    if (!items.length || !state.showVisuals || state.query) {
+      layer.style.width = '';
+      layer.style.height = '';
+      return;
+    }
+    const scale = state.zoom / 100;
+    let contentWidth = ROW_NUMBER_W * scale + state.visibleCols.reduce((sum, index) => sum + state.widths[index] * scale, 0);
+    let contentHeight = HEADER_H * scale + state.viewOffsets[state.viewOffsets.length - 1];
     for (const item of items) {
       const bounds = visualBounds(item);
+      contentWidth = Math.max(contentWidth, bounds.x + bounds.width);
+      contentHeight = Math.max(contentHeight, bounds.y + bounds.height);
       const node = document.createElement('div');
       node.className = 'visual-object' + (item.kind === 'unsupported' ? ' unsupported' : '');
       node.style.left = bounds.x + 'px';
@@ -813,6 +886,8 @@
       });
       layer.appendChild(node);
     }
+    layer.style.width = contentWidth + 'px';
+    layer.style.height = contentHeight + 'px';
   }
 
   function openVisual(item) {
@@ -823,7 +898,7 @@
     if (item.kind === 'image') {
       const image = document.createElement('img');
       image.src = item.src;
-      image.alt = item.name || 'Imagen incrustada en Excel';
+      image.alt = item.alt || item.name || 'Imagen incrustada en Excel';
       body.appendChild(image);
     } else if (item.kind === 'chart') {
       body.appendChild(window.XLSXViewerVisuals.renderChart(item.chart));
@@ -844,6 +919,7 @@
     state.ws = ws;
     state.cellStyles = state.cellStylesBySheet.get(state.wb.SheetNames[index]) || new Map();
     state.visuals = state.visualsBySheet.get(state.wb.SheetNames[index]) || [];
+    state.cellImages = state.cellImagesBySheet.get(state.wb.SheetNames[index]) || new Map();
     state.filtered = null;
     state.query = '';
     state.searchText = null;
@@ -918,8 +994,13 @@
     state.name = name;
     state.cellStylesBySheet = cellStylesBySheet || new Map();
     state.visualsBySheet = visualData && visualData.bySheet ? visualData.bySheet : new Map();
+    state.cellImagesBySheet = visualData && visualData.cellImagesBySheet ? visualData.cellImagesBySheet : new Map();
     state.visualUrls = visualData && visualData.urls ? visualData.urls : [];
     state.showVisuals = true;
+    state.zoom = 100;
+    document.documentElement.style.setProperty('--zoom-scale', '1');
+    document.documentElement.style.setProperty('--row-number-width', ROW_NUMBER_W + 'px');
+    $('zoomReset').textContent = '100%';
     state.active = 0;
     $('empty').hidden = true;
     $('viewer').hidden = false;
@@ -1019,8 +1100,11 @@
     state.selectedRow = rowIndex;
     const row = state.rows[rowIndex] || [];
     let value = row[colIndex] == null ? '' : String(row[colIndex]);
-    const formula = state.formulas.get((state.rowStart + rowIndex) + ',' + (state.colStart + colIndex));
+    const absolute = (state.rowStart + rowIndex) + ',' + (state.colStart + colIndex);
+    const formula = state.formulas.get(absolute);
+    const cellImage = state.cellImages.get(absolute);
     if (!value && formula) value = formula;
+    if (!value && cellImage) value = cellImage.alt || cellImage.name || 'Imagen insertada en la celda';
     showCell(td.dataset.addr, value, false);
     state.renderedStart = -1;
     renderBody(true);
@@ -1064,8 +1148,39 @@
       return;
     }
     state.showVisuals = !state.showVisuals;
+    renderBody(true);
     renderVisuals();
+    renderStats();
   });
+
+  function setZoom(value) {
+    const next = Math.max(50, Math.min(200, Math.round(value / 10) * 10));
+    if (next === state.zoom) return;
+    const wrap = $('gridwrap');
+    const verticalProgress = wrap.scrollHeight > wrap.clientHeight
+      ? wrap.scrollTop / (wrap.scrollHeight - wrap.clientHeight) : 0;
+    const horizontalProgress = wrap.scrollWidth > wrap.clientWidth
+      ? wrap.scrollLeft / (wrap.scrollWidth - wrap.clientWidth) : 0;
+    state.zoom = next;
+    document.documentElement.style.setProperty('--zoom-scale', String(next / 100));
+    document.documentElement.style.setProperty('--row-number-width', (ROW_NUMBER_W * next / 100) + 'px');
+    $('zoomReset').textContent = next + '%';
+    rebuildVisibleRows();
+    renderHeader();
+    state.renderedStart = -1;
+    renderBody(true);
+    renderVisuals();
+    requestAnimationFrame(() => {
+      wrap.scrollTop = verticalProgress * Math.max(0, wrap.scrollHeight - wrap.clientHeight);
+      wrap.scrollLeft = horizontalProgress * Math.max(0, wrap.scrollWidth - wrap.clientWidth);
+      renderBody(true);
+      renderVisuals();
+    });
+  }
+
+  $('zoomOut').addEventListener('click', () => setZoom(state.zoom - 10));
+  $('zoomIn').addEventListener('click', () => setZoom(state.zoom + 10));
+  $('zoomReset').addEventListener('click', () => setZoom(100));
 
   $('closeVisualDialog').addEventListener('click', () => $('visualDialog').close());
   $('visualDialog').addEventListener('click', (event) => {
@@ -1186,6 +1301,12 @@
     if (mod && event.key.toLowerCase() === 'o') {
       event.preventDefault();
       $('fileInput').click();
+    } else if (mod && (event.key === '+' || (event.key === '=' && event.shiftKey) || event.code === 'NumpadAdd') && state.wb) {
+      event.preventDefault();
+      setZoom(state.zoom + 10);
+    } else if (mod && (event.key === '-' || event.code === 'NumpadSubtract') && state.wb) {
+      event.preventDefault();
+      setZoom(state.zoom - 10);
     } else if (event.key === 'Escape' && state.wb) {
       const search = $('search');
       if (document.activeElement === search && search.value) {

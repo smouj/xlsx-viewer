@@ -215,27 +215,35 @@
     return Number(content.byteLength || content.length || 0);
   }
 
+  function mediaUrl(wb, path, mediaState) {
+    if (mediaState.cache.has(path)) return { url:mediaState.cache.get(path) };
+    const file = wb.files && wb.files[path];
+    const mime = imageMime(path);
+    const bytes = mediaBytes(file);
+    if (!file || !mime || !bytes) return { error:'Formato de imagen no compatible' };
+    if (mediaState.totalBytes + bytes > MAX_MEDIA_BYTES) return { error:'Imagen omitida por tamaño' };
+    try {
+      const url = URL.createObjectURL(new Blob([file.content], { type:mime }));
+      mediaState.urls.push(url);
+      mediaState.totalBytes += bytes;
+      mediaState.cache.set(path, url);
+      return { url };
+    } catch (_) {
+      return { error:'No se pudo cargar la imagen' };
+    }
+  }
+
   function readAnchorObject(wb, anchor, anchorMap, drawingRels, defaultName, mediaState) {
     const picture = firstElement(anchor, 'pic');
     if (picture) {
       const blip = firstElement(picture, 'blip');
       const relation = blip && (relationshipId(blip, 'embed') || relationshipId(blip, 'link'));
       const target = drawingRels.get(relation);
-      const file = target && wb.files && wb.files[target.path];
-      const mime = target && imageMime(target.path);
-      if (target && file && mime) {
-        const bytes = mediaBytes(file);
-        if (bytes && mediaState.totalBytes + bytes <= MAX_MEDIA_BYTES) {
-          try {
-            const url = URL.createObjectURL(new Blob([file.content], { type:mime }));
-            mediaState.urls.push(url);
-            mediaState.totalBytes += bytes;
-            return { kind:'image', name:objectName(picture, defaultName), src:url, anchor:anchorMap };
-          } catch (_) { /* Keep a visible fallback card below. */ }
-        }
-        return { kind:'unsupported', name:objectName(picture, defaultName), message:bytes > MAX_MEDIA_BYTES ? 'Imagen omitida por tamaño' : 'No se pudo cargar la imagen', anchor:anchorMap };
-      }
-      return { kind:'unsupported', name:objectName(picture, defaultName), message:'Formato de imagen no compatible', anchor:anchorMap };
+      if (!target) return { kind:'unsupported', name:objectName(picture, defaultName), message:'Formato de imagen no compatible', anchor:anchorMap };
+      const media = mediaUrl(wb, target.path, mediaState);
+      return media.url
+        ? { kind:'image', name:objectName(picture, defaultName), src:media.url, anchor:anchorMap }
+        : { kind:'unsupported', name:objectName(picture, defaultName), message:media.error, anchor:anchorMap };
     }
 
     const chartReference = firstElement(anchor, 'chart');
@@ -256,13 +264,88 @@
     return null;
   }
 
+  function directChildren(node, localName) {
+    return Array.from(node && node.children || []).filter((element) => element.localName === localName);
+  }
+
+  function readLocalImageValues(wb, mediaState) {
+    const structureDoc = parseXml(wb, 'xl/richData/richValueStructure.xml');
+    const valuesDoc = parseXml(wb, 'xl/richData/richValue.xml');
+    const relsDoc = parseXml(wb, 'xl/richData/richValueRel.xml');
+    if (!structureDoc || !valuesDoc || !relsDoc) return new Map();
+
+    const structures = allElements(structureDoc, 's');
+    const values = allElements(valuesDoc, 'rv');
+    const richRels = directChildren(relsDoc.documentElement, 'rel');
+    const mediaRels = relationships(wb, 'xl/richData/richValueRel.xml');
+    const images = new Map();
+
+    for (let valueIndex = 0; valueIndex < values.length; valueIndex++) {
+      const value = values[valueIndex];
+      const structure = structures[Number(value.getAttribute('s'))];
+      if (!structure || structure.getAttribute('t') !== '_localImage') continue;
+      const keys = directChildren(structure, 'k');
+      const fields = directChildren(value, 'v');
+      let relationIndex = -1;
+      let alt = '';
+      keys.forEach((key, index) => {
+        const field = fields[index];
+        if (!field) return;
+        if (key.getAttribute('n') === '_rvRel:LocalImageIdentifier') relationIndex = Number(nodeText(field));
+        if (key.getAttribute('n') === 'Text') alt = nodeText(field);
+      });
+      const relation = richRels[relationIndex];
+      const target = relation && mediaRels.get(relationshipId(relation, 'id'));
+      if (!target) continue;
+      const media = mediaUrl(wb, target.path, mediaState);
+      images.set(valueIndex, media.url
+        ? { kind:'image', src:media.url, alt }
+        : { kind:'unsupported', message:media.error || 'Vista previa no disponible', alt });
+    }
+    return images;
+  }
+
+  function readCellImages(wb, sheetDoc, metadataDoc, localImages) {
+    if (!metadataDoc || !localImages.size) return new Map();
+    const valueMetadata = firstElement(metadataDoc, 'valueMetadata');
+    if (!valueMetadata) return new Map();
+    const blocks = directChildren(valueMetadata, 'bk');
+    const result = new Map();
+    for (const cell of allElements(sheetDoc, 'c')) {
+      const metadataIndex = Number(cell.getAttribute('vm')) - 1;
+      if (!Number.isInteger(metadataIndex) || metadataIndex < 0) continue;
+      const address = cell.getAttribute('r');
+      if (!address) continue;
+      const block = blocks[metadataIndex];
+      if (!block) continue;
+      let image = null;
+      for (const record of directChildren(block, 'rc')) {
+        const valueIndex = Number(record.getAttribute('v'));
+        if (localImages.has(valueIndex)) {
+          image = localImages.get(valueIndex);
+          break;
+        }
+      }
+      if (!image) continue;
+      const decoded = XLSX.utils.decode_cell(address);
+      result.set(decoded.r + ',' + decoded.c, {
+        kind:image.kind, name:'Imagen en ' + address, src:image.src,
+        message:image.message, alt:image.alt || 'Imagen insertada en la celda ' + address
+      });
+    }
+    return result;
+  }
+
   function extract(wb) {
     const bySheet = new Map();
+    const cellImagesBySheet = new Map();
     const urls = [];
-    const mediaState = { totalBytes:0, urls };
+    const mediaState = { totalBytes:0, urls, cache:new Map() };
     try {
       const sheetEntries = wb.Workbook && wb.Workbook.Sheets ? wb.Workbook.Sheets : [];
       const workbookRels = relationships(wb, 'xl/workbook.xml');
+      const metadataDoc = parseXml(wb, 'xl/metadata.xml');
+      const localImages = readLocalImageValues(wb, mediaState);
       for (let index = 0; index < sheetEntries.length; index++) {
         const metadata = sheetEntries[index];
         const sheetName = metadata.name || wb.SheetNames[index];
@@ -270,6 +353,8 @@
         if (!sheetRel) continue;
         const sheetDoc = parseXml(wb, sheetRel.path);
         if (!sheetDoc) continue;
+        const cellImages = readCellImages(wb, sheetDoc, metadataDoc, localImages);
+        if (cellImages.size) cellImagesBySheet.set(sheetName, cellImages);
         const sheetRels = relationships(wb, sheetRel.path);
         const drawings = allElements(sheetDoc, 'drawing');
         const objects = [];
@@ -294,7 +379,9 @@
       for (const url of urls) URL.revokeObjectURL(url);
       throw error;
     }
-    return { bySheet, urls, count:Array.from(bySheet.values()).reduce((total, items) => total + items.length, 0) };
+    const objectCount = Array.from(bySheet.values()).reduce((total, items) => total + items.length, 0);
+    const cellImageCount = Array.from(cellImagesBySheet.values()).reduce((total, images) => total + images.size, 0);
+    return { bySheet, cellImagesBySheet, urls, count:objectCount + cellImageCount };
   }
 
   function svgElement(parent, name, attrs, text) {
