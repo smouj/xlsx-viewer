@@ -35,9 +35,11 @@
 
 **Voryda Sheet** es un visor de solo lectura para archivos **.xlsx**, **.xlsm**, **.xls** y **.csv**. Se ejecuta en el navegador, sin cuenta, servidor, analíticas ni subida de archivos. Incluye un lanzador de Windows para abrirlo en una ventana de app.
 
+El código actual y la demo ya usan la marca Voryda Sheet. La publicación portátil existente **v1.0.0** es anterior al cambio; descarga el ZIP del código actual para obtener el icono y el nombre nuevos.
+
 <p align="center">
   <a href="https://smouj.github.io/xlsx-viewer/">Abrir la demo web</a> ·
-  <a href="https://github.com/smouj/xlsx-viewer/releases/latest">Descargar la última versión</a>
+  <a href="https://github.com/smouj/xlsx-viewer/archive/refs/heads/main.zip">Descargar el ZIP del código actual</a>
 </p>
 
 ![Voryda Sheet mostrando una hoja de cálculo](docs/screenshot.png)
@@ -63,7 +65,7 @@
 
 ## Instalación
 
-1. Descarga el ZIP publicado en [Releases](https://github.com/smouj/xlsx-viewer/releases/latest).
+1. Descarga el ZIP del [código actual de la rama principal](https://github.com/smouj/xlsx-viewer/archive/refs/heads/main.zip).
 2. Descomprímelo en una carpeta permanente.
 3. Ejecuta `launcher.vbs` para abrir Voryda Sheet en una ventana de app en Windows.
 

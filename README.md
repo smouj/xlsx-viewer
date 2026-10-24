@@ -37,7 +37,7 @@
 
 <p align="center">
   <a href="https://smouj.github.io/xlsx-viewer/">Open the web demo</a> ·
-  <a href="https://github.com/smouj/xlsx-viewer/releases/latest">Download the latest release</a>
+  <a href="https://github.com/smouj/xlsx-viewer/archive/refs/heads/main.zip">Download the current source ZIP</a>
 </p>
 
 ## Features
@@ -54,7 +54,7 @@
 
 ## Project status
 
-The repository publishes **Voryda Sheet 1.0.0** as a portable ZIP. The browser demo is also available. The Windows launcher uses an installed copy of Chrome or Edge when available; opening <code>index.html</code> directly works in modern browsers.
+The current source and browser demo are branded **Voryda Sheet**. The existing **v1.0.0** portable release predates this rebrand. Download the [current source ZIP](https://github.com/smouj/xlsx-viewer/archive/refs/heads/main.zip) to get the latest branding and app icon. The Windows launcher uses an installed copy of Chrome or Edge when available; opening <code>index.html</code> directly works in modern browsers.
 
 The viewer is read-only. It does not edit or save changes to the source workbook. See [the supported behavior and limitations](#data-fidelity-and-limitations) before relying on complex Excel objects.
 
